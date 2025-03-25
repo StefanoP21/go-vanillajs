@@ -41,12 +41,25 @@ func main() {
 	}
 
 	// Movie Handler Initializer
-	movieHandler := handlers.MovieHandler{
-		Storage: movieRepo,
-		Logger:  logInstance,
-	}
+	// movieHandler := handlers.MovieHandler{
+	// 	Storage: movieRepo,
+	// 	Logger:  logInstance,
+	// }
 	// movieHandler.Storage = movieRepo
 	// movieHandler.Logger = logInstance
+
+	// Initialize handlers
+	movieHandler := handlers.NewMovieHandler(movieRepo, logInstance)
+	// authHandler := handlers.NewAuthHandler(userStorage, jwt, logInstance)
+
+	// Set up routes
+	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
+	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
+	http.HandleFunc("/api/movies/search", movieHandler.SearchMovies)
+	http.HandleFunc("/api/movies/", movieHandler.GetMovie)
+	http.HandleFunc("/api/genres", movieHandler.GetGenres)
+	http.HandleFunc("/api/account/register", movieHandler.GetGenres)
+	http.HandleFunc("/api/account/authenticate", movieHandler.GetGenres)
 
 	// Set up routes
 	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
