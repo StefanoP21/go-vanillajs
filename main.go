@@ -8,6 +8,7 @@ import (
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	"github.com/stefanop21/reelingit/data"
 	"github.com/stefanop21/reelingit/handlers"
 	"github.com/stefanop21/reelingit/logger"
 )
@@ -33,8 +34,19 @@ func main() {
 	}
 	defer db.Close()
 
+	// Initialize Repository
+	movieRepo, err := data.NewMovieRepository(db, logInstance)
+	if err != nil {
+		log.Fatalf("Failed to initialize repository")
+	}
+
 	// Movie Handler Initializer
-	movieHandler := handlers.MovieHandler{}
+	movieHandler := handlers.MovieHandler{
+		Storage: movieRepo,
+		Logger:  logInstance,
+	}
+	// movieHandler.Storage = movieRepo
+	// movieHandler.Logger = logInstance
 
 	// Set up routes
 	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
