@@ -15,6 +15,13 @@ type MovieHandler struct {
 	logger  *logger.Logger
 }
 
+func NewMovieHandler(storage data.MovieStorage, log *logger.Logger) *MovieHandler {
+	return &MovieHandler{
+		storage: storage,
+		logger:  log,
+	}
+}
+
 // Utility functions
 func (h *MovieHandler) writeJSONResponse(w http.ResponseWriter, data interface{}) error {
 	w.Header().Set("Content-Type", "application/json")
@@ -120,12 +127,5 @@ func (h *MovieHandler) GetGenres(w http.ResponseWriter, r *http.Request) {
 	}
 	if h.writeJSONResponse(w, genres) == nil {
 		h.logger.Info("Successfully served genres")
-	}
-}
-
-func NewMovieHandler(storage data.MovieStorage, log *logger.Logger) *MovieHandler {
-	return &MovieHandler{
-		storage: storage,
-		logger:  log,
 	}
 }
