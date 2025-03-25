@@ -61,10 +61,6 @@ func main() {
 	http.HandleFunc("/api/account/register", movieHandler.GetGenres)
 	http.HandleFunc("/api/account/authenticate", movieHandler.GetGenres)
 
-	// Set up routes
-	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
-	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
-
 	// Static files
 	http.Handle("/", http.FileServer(http.Dir("public")))
 
